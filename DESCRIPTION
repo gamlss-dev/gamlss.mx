@@ -1,0 +1,15 @@
+Package: gamlss.mx
+Type: Package
+Title: Fitting Mixture Distributions with GAMLSS
+Version: 4.3-7
+Date: 2016-09-29
+Author: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>, Bob
+        Rigby <r.rigby@londonmet.ac.uk>
+Maintainer: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>
+LazyLoad: yes
+Depends: R (>= 2.2.1), gamlss.dist, gamlss, nnet, stats, graphics
+Suggests: MASS
+Description: The main purpose of this package is to allow fitting of
+        mixture distributions with GAMLSS models.
+License: GPL-2 | GPL-3
+URL: http://www.gamlss.org/
