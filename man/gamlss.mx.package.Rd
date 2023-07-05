@@ -1,5 +1,5 @@
-\name{gamlss.mx-package}
-\alias{gamlss.mx-package}
+\name{gamlss.mix-package}
+\alias{gamlss.mix-package}
 \alias{gamlss.mx}
 \docType{package}
 \title{The GAMLSS add on package for mixture distributions}
@@ -22,8 +22,10 @@ Francis. It also contains the function
 \code{gqz()} which is written by  Nick Sofroniou and the function \code{gauss.quad()} 
 written by Gordon Smyth.
 }
+
+
 \author{
-Mikis Stasinopoulos <\email{mikis.stasinopoulos@gamlss.org}> and Bob Rigby <\email{r.rigby@londonmet.ac.uk}> 
+Mikis Stasinopoulos <\email{d.stasinopoulos@londonmet.ac.uk}> and Bob Rigby <\email{r.rigby@londonmet.ac.uk}> 
 
 Maintainer: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>
 
@@ -36,8 +38,16 @@ models, R package version 0.34
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2003) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
+Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
+
+(see also \url{https://www.gamlss.com/}).
 }
 \keyword{ package }
 \keyword{ distribution }
@@ -47,11 +57,11 @@ Accompanying documentation in the current GAMLSS  help files, (see also  \url{ht
 }
 \examples{
 data(enzyme)
-mmNO <- gamlssMX(enzyme$act~1, family=NO, K=2)
+mmNO <- gamlssMX(act~1, family=NO, K=2, data=enzyme)
 mmNO
-\dontrun{
+\donttest{
 # also to make sure that it reaches the maximum
-mmNOs <- gamlssMXfits(n=10,enzyme$act~1, family=NO, K=2)
+mmNOs <- gamlssMXfits(n=10, act~1, family=NO, K=2, data=enzyme)
 fyNO<-dMX(y=seq(0,3,.01), mu=list(1.253, 0.1876), sigma=list(exp(-0.6665 ), exp(-2.573 )),
                   pi=list(0.4079609, 0.5920391 ), family=list("NO","NO") )
 hist(enzyme$act,freq=FALSE,ylim=c(0,3.5),xlim=c(0,3),br=21)

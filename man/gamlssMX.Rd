@@ -9,12 +9,12 @@ The  function \code{gamlssMX} is design for fitting a K fold non parametric mixt
 \usage{
 gamlssMX(formula = formula(data), pi.formula = ~1, 
          family = "NO", weights, K = 2, prob = NULL, 
-         data = sys.parent(), control = MX.control(...), 
+         data, control = MX.control(...), 
          g.control = gamlss.control(trace = FALSE, ...), 
          zero.component = FALSE,   ...)
 gamlssMXfits(n = 5, formula = formula(data), pi.formula = ~1, 
          family = "NO", weights, K = 2, prob = NULL, 
-         data = sys.parent(), control = MX.control(), 
+         data, control = MX.control(), 
          g.control = gamlss.control(trace = FALSE),
          zero.component = FALSE, ... )
 }
@@ -45,12 +45,20 @@ gamlssMXfits(n = 5, formula = formula(data), pi.formula = ~1,
   \item{\dots}{ for extra arguments} 
 }
 
-\references{ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,
-(with discussion), \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
+\references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
+\emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2003) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
- }
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
+Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
+
+(see also \url{https://www.gamlss.com/}).
+}
 \author{Mikis Stasinopoulos and Bob Rigby}
 
 \seealso{\code{\link[gamlss]{gamlss}}, \code{\link[gamlss.dist]{gamlss.family}}}
@@ -59,7 +67,7 @@ library(MASS)
 data(geyser)
 # fitting 2 finite normal mixtures 
 m1<-gamlssMX(waiting~1,data=geyser,family=NO, K=2)
-\dontrun{
+\donttest{
 #fitting 2 finite gamma mixtures 
 m2<-gamlssMX(waiting~1,data=geyser,family=GA, K=2)
 # fitting a model for pi
