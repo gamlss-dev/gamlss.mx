@@ -8,7 +8,7 @@ Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre"),
            )
 Description: The package provides fitting of
         mixture distributions with Generalized Additive Models for Location Scale and Shape,
-        see Chapter 7 of Stasinopoulos et al. (2017) <doi:10.1201/b21973-4>.
+        see Chapter 7 of Stasinopoulos et al. (2017) <doi:10.1201/b21973-7>.
 License: GPL-2 | GPL-3
 URL: https://www.gamlss.com/
 BugReports: https://github.com/gamlss-dev/gamlss.mx/issues
