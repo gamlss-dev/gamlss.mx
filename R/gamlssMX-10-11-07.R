@@ -167,7 +167,8 @@ if (length(allFormula)!=K) stop("the length of the list for the formula is not e
 ## get response and his length
         Y <- model.extract(model.frame(allFormula[[1]],data=data),"response")
         N <-  if(is.null(dim(Y))) length(Y) else dim(Y)[1]# calculate the dimension for y  
-pweights. <<- if (missing(weights)) rep(1,N) else weights  
+pweights. <- pweights. <<- if (missing(weights)) rep(1,N) else weights  
+#assign("pweights.", pweights, envir= gamlss.envir)
 ## get things from control
   set.seed(control$seed) # set the seed 
 prob.sample <- if (is.null(control$sample)) 0.10 else control$sample  
@@ -235,7 +236,6 @@ allModels <- vector("list",K)
           {
           dataKK.$wWw <- wWw <- as.vector(W)
           dataKK.$res.var <- res.var
-          browser()
           mult.mod <- multinom(form.prob, weights=wWw, data=dataKK., trace=FALSE)
            fitted(mult.mod)[1:11,]
               PROB <- fitted(mult.mod)[1:N,] # take only N of them 
