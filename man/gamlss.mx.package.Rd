@@ -1,5 +1,5 @@
-\name{gamlss.mix-package}
-\alias{gamlss.mix-package}
+\name{gamlss.mx-package}
+\alias{gamlss.mx-package}
 \alias{gamlss.mx}
 \docType{package}
 \title{The GAMLSS add on package for mixture distributions}
@@ -15,9 +15,7 @@ Date: \tab 2005-08-3\cr
 License: \tab GPL (version 2 or later) \cr
 }
 This package has two main function the \code{gamlssMX()} which is loosely based on the
-package \code{flexmix} of R and the function \code{gamlssNP()}  which is based on the \code{npmlreg} 
-package of  Jochen Einbeck, Ross Darnell and John Hinde (2006) which in turns
-is based on several GLIM4 macros originally written  by  Murray Aitkin and Brian 
+package \code{flexmix} of R and the function \code{gamlssNP()}  which is based on the \code{npmlreg} package of  Jochen Einbeck, Ross Darnell and John Hinde (2006) which in turns is based on several GLIM4 macros originally written  by  Murray Aitkin and Brian 
 Francis. It also contains the function 
 \code{gqz()} which is written by  Nick Sofroniou and the function \code{gauss.quad()} 
 written by Gordon Smyth.
@@ -38,6 +36,7 @@ models, R package version 0.34
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+
 Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
 	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
 
@@ -47,7 +46,10 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
 \emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
+Stasinopoulos M.D., Kneib T, Klein N, Mayr A, Heller GZ. (2024) Generalized Additive Models for Location, Scale and Shape: A Distributional Regression Approach, with Applications. Cambridge University Press.
+
 (see also \url{https://www.gamlss.com/}).
+
 }
 \keyword{ package }
 \keyword{ distribution }
