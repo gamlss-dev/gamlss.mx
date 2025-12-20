@@ -12,9 +12,8 @@
 ## do we need means? 
 ## the plotMX() need modification for BI type data Done but not checked
 ## 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+################################################################################
+################################################################################
 gamlssMX  <- function ( formula = formula(data), 
                      pi.formula = ~1, 
                          family = "NO", # note is character
@@ -27,7 +26,8 @@ gamlssMX  <- function ( formula = formula(data),
                  zero.component = FALSE,     
                       ...)
  {
-#-------------------------------------------------------------------------------
+################################################################################
+################################################################################
 # this is to replicate rqres within gamlss enviroment DS Friday, March 31, 2006 at 10:30
 rqres <- function (pfun = "pNO", 
                    type = c("Continuous", "Discrete", "Mixed"),
@@ -39,11 +39,15 @@ rqres <- function (pfun = "pNO",
                    ... )
 { }
 body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
-##------------------------------------------------------------------------------
-##------------------------------------------------------------------------------
+################################################################################
+################################################################################
 .gamlss.bi.list <- eval(quote(.gamlss.bi.list), envir = getNamespace("gamlss"))
+################################################################################
+################################################################################
 # extra functions within -------------------------------------------------------
 # for getting the commulative function------------------------------------------
+################################################################################
+################################################################################
 get.the.p.function <- function(object, ...)
 {
 #gamlss.bi.list <- c("BI", "Binomial", "BB", "Beta Binomial")
@@ -64,7 +68,8 @@ if (!is.gamlss(object))  stop(paste("This is not an gamlss object", "\n", ""))
              else eval(call(dfun,q=object$y, mu=fitted(object,"mu"), sigma=fitted(object,"sigma"), nu=fitted(object,"nu"), tau=fitted(object,"tau")))})
 pfun 
 }
-#-------------------------------------------------------------------------------
+################################################################################
+################################################################################
 get.likelihood <- function(obj)
 {
 #gamlss.bi.list <- c("BI", "Binomial", "BB", "Beta Binomial")
@@ -84,7 +89,8 @@ if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", ""))
             else eval(call(dfun,x=obj$y, mu=fitted(obj), sigma=fitted(obj,"sigma"), nu=fitted(obj,"nu"), tau=fitted(obj,"tau")))})
 lik
 }           
-#-------------------------------------------------------------------------------
+################################################################################
+################################################################################
 expand.vc <- function(x,ni)
 {
   if (length(ni)==1)
@@ -107,9 +113,11 @@ expand.vc <- function(x,ni)
       xx
   }
 }
-#-------------------------------------------------------------------------------
+################################################################################
+################################################################################
 # the proper function starts here
-#-------------------------------------------------------------------------------
+################################################################################
+################################################################################
 #library(gamlss)
 #library(nnet)
  gamlssMXcall <- match.call()  #   the function call
@@ -117,7 +125,7 @@ expand.vc <- function(x,ni)
  if(!missing(data) & any(is.na(data)))   
       stop("The data contains NA's, use data = na.omit(mydata)") 
 ## prob are the starting values of the pi's   
- if(zero.component == TRUE)
+  if(zero.component == TRUE)
  { KK <- K+1 
   if (is.null(prob)) 
    { 
@@ -156,13 +164,14 @@ expand.vc <- function(x,ni)
 ## check that the length for both the family and formula is K
 if (length(allFamily)!=K) stop("the length of the list for the family is not equal the number of componets in the mixture")
 if (length(allFormula)!=K) stop("the length of the list for the formula is not equal the number of componets in the mixture")
-## get response for his length
+## get response and his length
         Y <- model.extract(model.frame(allFormula[[1]],data=data),"response")
         N <-  if(is.null(dim(Y))) length(Y) else dim(Y)[1]# calculate the dimension for y  
 pweights. <- pweights. <<- if (missing(weights)) rep(1,N) else weights  
+#assign("pweights.", pweights, envir= gamlss.envir)
 ## get things from control
   set.seed(control$seed) # set the seed 
-prob.sample <- if (is.null(control$sample)) 10/N else control$sample  
+prob.sample <- if (is.null(control$sample)) 0.10 else control$sample  
 ## creating the matrix of posterior probabilities (weights)
         W <- matrix(1, nrow=N, ncol=K ) 
 allModels <- vector("list",K)
