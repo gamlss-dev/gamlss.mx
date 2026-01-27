@@ -11,6 +11,8 @@ Depends: R (>= 2.2.1), gamlss.dist, gamlss, nnet, stats, graphics
 Suggests: MASS
 Description: The main purpose of this package is to allow fitting of
         mixture distributions with generalised additive models for location 
-        scale and shape models see Chapter 7 of Stasinopoulos et al. (2017) <doi:10.1201/b21973-4>.
+        scale and shape models see Chapter 7 of Stasinopoulos et al. (2017) 
+        <doi:10.1201/b21973-4>.
 License: GPL-2 | GPL-3
 URL: https://www.gamlss.com/
+RoxygenNote: 7.3.2
