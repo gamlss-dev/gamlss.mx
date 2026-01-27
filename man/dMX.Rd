@@ -7,19 +7,22 @@
 \title{Evaluate the d (pdf) and p (cdf) functions from GAMLSS mixtures}
 \description{
 The functions \code{dMX()} and \code{pMX()} can be used to evaluated the 
-pdf (p function) and the cdf (p function) receptively from a gamlss.family mixture.
-The functions \code{getpdfMX()} and \code{getpdfNP()} can be used to evaluate the fitted \code{d} function at a specified observation and therefore for plotting the fitted distribution of a fitted model at this  observation.
+pdf (p function) and the cdf (p function) receptively from a \code{gamlss.family} mixture.
+The functions \code{getpdfMX()} and \code{getpdfNP()} can be used to evaluate the fitted pdf,\code{d}, function at a specified observation and therefore for plotting the fitted distribution of a fitted model for this observation.
 }   
 \usage{
 dMX(y, mu = list(mu1 = 1, mu2 = 5), sigma = list(sigma1 = 1, sigma2 = 1), 
        nu = list(nu1 = 1, nu2 = 1), tau = list(tau1 = 1, tau2 = 1), 
        pi = list(pi1 = 0.2, pi2 = 0.8), family = list(fam1 = "NO", fam2 = "NO"), 
        log = FALSE, ...)
+
 pMX(q, mu = list(mu1 = 1, mu2 = 5), sigma = list(sigma1 = 1, sigma2 = 1), 
        nu = list(nu1 = 1, nu2 = 1), tau = list(tau1 = 1, tau2 = 1), 
        pi = list(pi1 = 0.2, pi2 = 0.8), family = list(fam1 = "NO", fam2 = "NO"), 
        log = FALSE, ...)
+       
 getpdfMX(object = NULL, observation = 1)
+
 getpdfNP(object = NULL, observation = 1)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -62,11 +65,17 @@ Returns values or pdf or cdf.
 \author{Mikis Stasinopoulos}
 \examples{
 fyNO<-dMX(y=seq(0,3,.01), mu=list(1.253, 0.1876), sigma=list(exp(-0.6665 ), exp(-2.573 )),
-                  pi=list(0.4079609, 0.5920391 ), family=list("NO","NO") )
+          pi=list(0.4079609, 0.5920391 ), family=list("NO","NO") )
 plot(fyNO~seq(0,3,.01), type="l")                  
 FyNO<-pMX(q=seq(0,3,.01), mu=list(1.253, 0.1876), sigma=list(exp(-0.6665 ), exp(-2.573 )),
-                  pi=list(0.4079609, 0.5920391 ), family=list("NO","NO") )
-plot(FyNO~seq(0,3,.01), type="l")  
+          pi=list(0.4079609, 0.5920391 ), family=list("NO","NO") )
+plot(FyNO~seq(0,3,.01), type="l") 
+# fit a finite mixture 
+data(enzyme)
+# fit a finite mixture 
+mmNP1 <- gamlssNP(act~1, data=enzyme, random=~1,family=NO, K=2)
+# and plot the first observation
+plot(getpdfNP(mmNP1,1), from=-1, to=4)
 }
 \keyword{distribution}
 \keyword{regression}
