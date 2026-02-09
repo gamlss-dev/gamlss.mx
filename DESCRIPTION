@@ -1,8 +1,8 @@
 Package: gamlss.mx
 Type: Package
 Title: Fitting Mixture Distributions with GAMLSS
-Version: 6.0-3
-Date: 2026-01-27
+Version: 6.0-4
+Date: 2026-02-09
 Author: Mikis Stasinopoulos <d.stasinopoulos@gre.ac.uk>, Bob
         Rigby <r.rigby@gre.ac.uk>
 Maintainer: Mikis Stasinopoulos <d.stasinopoulos@gre.ac.uk>
