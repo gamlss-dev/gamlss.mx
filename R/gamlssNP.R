@@ -427,7 +427,6 @@ if (mform1=='1')
 # for (i in 1:K)     WF[,i] <- prob[i]*get.the.p.function(allModels[[i]]) 
 #res <-qnorm(rowSums(WF))
 #----------------
-
       fitout$df.fit <- if (mixture=="np") fitout$df.fit+K-1 else fitout$df.fit
  fitout$df.residual <- N-fitout$df.fit 
   fitout$G.deviance <- ML.dev[iter]
@@ -804,7 +803,7 @@ gauss.quad <- function (n, kind = "legendre", alpha = 0, beta = 0)
 ################################################################################
 ################################################################################
 # getting the pdf function for spesific observation number
-getpdfNP <- function(object=NULL, observation=1)
+get_pdfNP <- function(object=NULL, observation=1)
 {
   if (class(object)[1]!="gamlssNP") stop("the object should be an gamlssNP object")
   .gamlss.bi.list <- eval(quote(.gamlss.bi.list), envir = getNamespace("gamlss"))
@@ -829,8 +828,8 @@ getpdfNP <- function(object=NULL, observation=1)
     PI[[i]] <-  object$prob[i]
     npar[[i]] <- length(ParamList[[i]])
   }  
-  npar <- unlist(npar)
-  nopar <- npar[1]
+     npar <- unlist(npar)
+    nopar <- npar[1]
   plotfun <- function(y)
   {  
     if (object$orig.family[1]%in%.gamlss.bi.list) 
@@ -849,6 +848,59 @@ getpdfNP <- function(object=NULL, observation=1)
              dMX(y, mu=MU, sigma=SIGMA, pi=PI, family=family),
              dMX(y, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
              dMX(y, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))
+    }  
+  }
+  plotfun
+}
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+# getting the pdf function for spesific observation number
+get_cdfNP <- function(object=NULL, observation=1)
+{
+  if (class(object)[1]!="gamlssNP") stop("the object should be an gamlssNP object")
+  .gamlss.bi.list <- eval(quote(.gamlss.bi.list), envir = getNamespace("gamlss"))
+          K <- object$K
+     family <- rep(object$orig.family[1],K) 
+  ParamList <- list()
+  MU <- SIGMA <- NU<- TAU <- PI <- npar<- list()
+  #modelForPi  <- class(object$model.pi)[1]=="multinom"
+  for (i in 1:K)
+  {
+    
+    ParamList[[i]] <- object$parameters
+    if ("mu"%in%ParamList[[i]])
+      MU[[i]] <- fitted(object, K=i)[observation]
+    if ("sigma"%in%ParamList[[i]])
+      SIGMA[[i]] <- fitted(object, K=i, parameter="sigma")[observation]
+    if ("nu"%in%ParamList[[i]])
+      NU[[i]] <- fitted(object, K=i, parameter="nu")[observation]
+    if ("tau"%in%ParamList[[i]])
+      TAU[[i]] <- fitted(object, K=i, parameter="tau")[observation]
+    PI[[i]] <-  object$prob[i]
+    npar[[i]] <- length(ParamList[[i]])
+  }  
+     npar <- unlist(npar)
+    nopar <- npar[1]
+  plotfun <- function(y)
+  {  
+    if (object$orig.family[1]%in%.gamlss.bi.list) 
+    {
+      yy <- object$y
+      bd <- object$bd 
+      switch(nopar,
+             pMX(y, bd=bd, mu=MU, pi=PI, family=family),      
+             pMX(y, bd=bd, mu=MU, sigma=SIGMA, pi=PI, family=family),
+             pMX(y, bd=bd, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+             pMX(y, bd=bd, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))  
+    } else 
+    {
+      switch(nopar,
+             pMX(y, mu=MU, pi=PI, family=family),      
+             pMX(y, mu=MU, sigma=SIGMA, pi=PI, family=family),
+             pMX(y, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+             pMX(y, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))
     }  
   }
   plotfun

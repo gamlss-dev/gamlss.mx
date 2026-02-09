@@ -1,8 +1,11 @@
 \name{dMX}
 \alias{dMX}
 \alias{pMX}
-\alias{getpdfMX}
-\alias{getpdfNP}
+\alias{get_pdfMX}
+\alias{get_cdfMX}
+\alias{get_qfunMX}
+\alias{get_pdfNP}
+\alias{get_cdfNP}
 
 \title{Evaluate the d (pdf) and p (cdf) functions from GAMLSS mixtures}
 \description{
@@ -21,9 +24,15 @@ pMX(q, mu = list(mu1 = 1, mu2 = 5), sigma = list(sigma1 = 1, sigma2 = 1),
        pi = list(pi1 = 0.2, pi2 = 0.8), family = list(fam1 = "NO", fam2 = "NO"), 
        log = FALSE, ...)
        
-getpdfMX(object = NULL, observation = 1)
+get_pdfMX(object = NULL, observation = 1)
 
-getpdfNP(object = NULL, observation = 1)
+get_cdfMX(object = NULL, observation = 1)
+
+get_qfunMX(object = NULL, observation = 1)
+
+get_pdfNP(object = NULL, observation = 1)
+
+get_cdfNP(object = NULL, observation = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -75,7 +84,7 @@ data(enzyme)
 # fit a finite mixture 
 mmNP1 <- gamlssNP(act~1, data=enzyme, random=~1,family=NO, K=2)
 # and plot the first observation
-plot(getpdfNP(mmNP1,1), from=-1, to=4)
+plot(get_pdfNP(mmNP1,1), from=-1, to=4)
 }
 \keyword{distribution}
 \keyword{regression}
