@@ -1,9 +1,12 @@
 
 # functions
-
 export(gamlssMX, MX.control, gamlssMXfits, 
        gamlssNP, NP.control,
-       dMX, pMX, getpdfMX, getpdfNP, plotMP)
+       dMX, pMX, get_pdfMX, 
+                 get_cdfMX, 
+                 get_pdfNP, 
+                 get_cdfNP, 
+                 plotMP)
 
 # datasets #export(lange)
 
