@@ -652,9 +652,9 @@ pMX <- function(q,
 ## checking the probabilities 
           K <- length(pi) 
        sump <- sum(unlist(pi))
-   if (sump!=1) stop(paste("the vector pi should sum to 1"))          
 #  for (i in 1:K) sump <-pi[[i]]+ sump 
-  if (!(9.9999999999>sump)&&(sump<1.00000000001)) stop(paste("the vector pi should sum to 1"))
+    if(!(9.9999999999>sump)&&(sump<1.00000000001)) 
+         stop(paste("the vector pi should sum to 1"))
  ## get the length of q and the length of the parameters
  if(is.null(dim(q))) N <- length(q) else N <- dim(q)[1]  
        Prob <- matrix(1, nrow=N, ncol=K ) # rep(prob,rep(N,K))  
@@ -706,7 +706,8 @@ pMX <- function(q,
 # A function creating a function which can be use to plot a 
 # fitted mixture distributions
 # it needs a gamlssMX object and the an observation number 
-getpdfMX <- function(object=NULL, observation=1)
+# # get the f() from a observation of a fitted MX model 
+get_pdfMX <- function(object=NULL, observation=1)
 {
   if (class(object)[1]!="gamlssMX") stop("the object should be an gamlssMX object")
 .gamlss.bi.list <- eval(quote(.gamlss.bi.list), envir = getNamespace("gamlss"))
@@ -754,7 +755,66 @@ if (any(npar==npar[1]))
     }  
   }
   plotfun
+} # it creates a function
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+# get the F() from a observation of a fitted MX model 
+# A function creating a function which can be use to plot a 
+# fitted mixture distributions
+# it needs a gamlssMX object and the an observation number 
+# # get the f() from a observation of a fitted MX model 
+get_cdfMX <- function(object=NULL, observation=1)
+{
+if (class(object)[1]!="gamlssMX") stop("the object should be an gamlssMX object")
+.gamlss.bi.list <- eval(quote(.gamlss.bi.list), envir = getNamespace("gamlss"))
+         K <- object$K
+    family <- object$family
+ ParamList <- list()
+        MU <- SIGMA <- NU<- TAU <- PI <- npar<- list()
+modelForPi <- class(object$model.pi)[1]=="multinom"
+for (i in 1:K)
+  {
+    ParamList[[i]] <- object$models[[i]]$parameters
+    if ("mu"%in%ParamList[[i]])
+      MU[[i]] <- fitted(object, K=i)[observation]
+    if ("sigma"%in%ParamList[[i]])
+      SIGMA[[i]] <- fitted(object, K=i, parameter="sigma")[observation]
+    if ("nu"%in%ParamList[[i]])
+      NU[[i]] <- fitted(object, K=i, parameter="nu")[observation]
+    if ("tau"%in%ParamList[[i]])
+      TAU[[i]] <- fitted(object, K=i, parameter="tau")[observation]
+    PI[[i]] <- if (modelForPi)  object$prob[observation,i]  else object$prob[i]
+    npar[[i]] <- length(ParamList[[i]])
+  }  
+     npar <- unlist(npar)
+if (any(npar==npar[1])) 
+    nopar <- npar[1] else 
+stop("the different distributions should have same number of parameters for the 
+     function to work")
+  plotfun <- function(y)
+{  
+  if (object$family[1]%in%.gamlss.bi.list) 
+  {
+      yy <- object$y
+      bd <- object$bd 
+      switch(nopar,
+             pMX(y, bd=bd, mu=MU, pi=PI, family=family),      
+             pMX(y, bd=bd, mu=MU, sigma=SIGMA, pi=PI, family=family),
+             pMX(y, bd=bd, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+             pMX(y, bd=bd, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))  
+  } else 
+  {
+      switch(nopar,
+             pMX(y, mu=MU, pi=PI, family=family),      
+             pMX(y, mu=MU, sigma=SIGMA, pi=PI, family=family),
+             pMX(y, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+             pMX(y, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))
+  }  
 }
+  plotfun
+} # it creates a function
 ################################################################################
 ################################################################################
 ################################################################################
@@ -771,7 +831,7 @@ meanMX <- function(obj, observations=NULL, limit=c(-Inf, Inf))
      j <- 1
   for (i in obs)
   {
-    fnLO <- getpdfMX(obj, observation=i)
+    fnLO <- get_pdfMX(obj, observation=i)
     f <-function(x) x*fnLO(x)
     mean[j] <- integrate(f, limit[1], limit[2])$value
     j <- j+1
@@ -782,3 +842,88 @@ meanMX <- function(obj, observations=NULL, limit=c(-Inf, Inf))
 ################################################################################
 ################################################################################
 ################################################################################ 
+#getcdfMX <-  function(object=NULL, observation=1)
+get_qfunMX <-  function(object=NULL, observation=1)
+{ 
+if (class(object)[1]!="gamlssMX") stop("the object should be an gamlssMX object")
+.gamlss.bi.list <- eval(quote(.gamlss.bi.list), envir = getNamespace("gamlss"))
+        K <- object$K
+   family <- object$family
+ParamList <- list()
+       MU <- SIGMA <- NU<- TAU <- PI <- npar<- list()
+modelForPi <- class(object$model.pi)[1]=="multinom"
+for (i in 1:K)
+  {
+    ParamList[[i]] <- object$models[[i]]$parameters
+    if ("mu"%in%ParamList[[i]])
+      MU[[i]] <- fitted(object, K=i)[observation]
+    if ("sigma"%in%ParamList[[i]])
+      SIGMA[[i]] <- fitted(object, K=i, parameter="sigma")[observation]
+    if ("nu"%in%ParamList[[i]])
+      NU[[i]] <- fitted(object, K=i, parameter="nu")[observation]
+    if ("tau"%in%ParamList[[i]])
+      TAU[[i]] <- fitted(object, K=i, parameter="tau")[observation]
+    PI[[i]] <- if (modelForPi)  object$prob[observation,i]  else object$prob[i]
+    npar[[i]] <- length(ParamList[[i]])
+  }  
+  npar <- unlist(npar)
+  if (any(npar==npar[1])) 
+    nopar <- npar[1] else 
+      stop("the different distributions should have same number of parameters for the function to work")
+F <- function(q)
+  {  
+    if (object$family[1]%in%.gamlss.bi.list) 
+    {
+      qq <- object$y
+      bd <- object$bd 
+      switch(nopar,
+             pMX(qq, bd=bd, mu=MU, pi=PI, family=family),      
+             pMX(qq, bd=bd, mu=MU, sigma=SIGMA, pi=PI, family=family),
+             pMX(qq, bd=bd, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+             pMX(qq, bd=bd, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))  
+    } else 
+    {
+      switch(nopar,
+             pMX(q, mu=MU, pi=PI, family=family),      
+             pMX(q, mu=MU, sigma=SIGMA, pi=PI, family=family),
+             pMX(q, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+             pMX(q, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))
+    }  
+  }
+  ymin <- min(object$models[[1]]$y)
+  ymax <- max(object$models[[1]]$y)
+#---the Q functions-------------------------------------------------------------  
+  Q <- function(p, ...)
+  {
+    F <- function(q)
+    {  
+      if (object$family[1]%in%.gamlss.bi.list) 
+      {
+        qq <- object$y
+        bd <- object$bd 
+        switch(nopar,
+               pMX(qq, bd=bd, mu=MU, pi=PI, family=family),      
+               pMX(qq, bd=bd, mu=MU, sigma=SIGMA, pi=PI, family=family),
+               pMX(qq, bd=bd, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+               pMX(qq, bd=bd, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))  
+      } else 
+      {
+        switch(nopar,
+               pMX(q, mu=MU, pi=PI, family=family),      
+               pMX(q, mu=MU, sigma=SIGMA, pi=PI, family=family),
+               pMX(q, mu=MU, sigma=SIGMA, nu=NU, pi=PI, family=family),
+               pMX(q, mu=MU, sigma=SIGMA, nu=NU, tau=TAU, pi=PI, family=family))
+      }  
+    }    
+    h <- function(q) { F(q)  - p}
+    ymin <- ymin
+    ymax <- ymax
+    q <- uniroot(h, interval=c(ymin-1,ymax+1))$root# with .Machine$double.xmax is not coverging
+    q
+  }
+  return(Vectorize(Q))
+}
+################################################################################
+################################################################################
+################################################################################
+################################################################################
